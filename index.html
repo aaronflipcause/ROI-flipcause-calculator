@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+	
+		<div class="roi-calculator-wrapper">
+			<div class="roi-calculator">
+				<div class="roi-calculator-main">
+					<h1>Flipcause ROI Calculator</h1>
+				</div>
+				<div class="roi-form-group">
+					<span class="roi-form-label">Average Annual Donation Amount</span>
+					<input type="text" id="roi-a" class="roi-form-input">	
+				</div>
+				<div class="roi-form-group">
+					<span class="roi-form-label">Current Processing Rates</span>
+					<input type="text" id="roi-b" class="roi-form-input">	
+				</div>
+				<div class="roi-seprator"></div>
+				<div class="roi-form-group">
+					<hr>
+					<span class="roi-result-label">What you'll pay with your current payment processing rate:</span>
+					<span class="roi-result-number" id="roi-cr">$0.00</span>
+						
+				</div>
+				<div class="roi-form-group">
+					<hr>
+					<span class="roi-result-label">The most you'll pay with the Flipcause 1.5% Effective Rate: </span>
+					<span class="roi-result-number" id="roi-fr">$0.00</span>	
+				</div>
+				<div class="roi-form-group full border-bottom">
+					<hr>
+					<span class="roi-result-label">Overall Savings:  </span>
+					<span class="roi-result-number" id="roi-saving">$0.00</span>	
+				</div>
+				<div class="roi-form-group full">
+					<button class="roi-print-out" id="roi-print">Print out Result</button>			
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script>
+			jQuery(document).ready(function($){
+				function ROIcalculation(){
+					var a 	= $("#roi-a").val().replace(/[^0-9\.]+/g,"");
+					var b 	= $("#roi-b").val().replace(/[^0-9\.]+/g,"");
+					var cr 	= Number(b) * Number(a) * 0.01;
+					var fr 	= Number(a) * 1.5 * 0.01;
+					var save= Number(cr) - Number(fr);
+					$("#roi-cr").html(cr.toLocaleString('en-US' , { style:'currency' , currency:'USD'}));
+					$("#roi-fr").html(fr.toLocaleString('en-US' , { style:'currency' , currency:'USD'}));
+					$("#roi-saving").html(save.toLocaleString('en-US' , { style:'currency' , currency:'USD'}));
+				}
+//				$("#roi-a").on('input', function(){
+//					var current = $(this).val().replace(/[^0-9\.]+/g,"");
+//					var neew	= Number(current).toLocaleString('en-US' , { style:'currency' , currency:'USD'});
+//					ROIcalculation();
+//				});
+//				$("#roi-b").on('input', function(){
+//					var current = $(this).val().replace(/[^0-9\.]+/g,"");
+//					var neew	= Number(current).toLocaleString('en-US' , { style:'currency' , currency:'USD'});
+//					ROIcalculation();
+//				});
+				
+				$("#roi-a , #roi-b").keyup(function(){
+					var price = $(this).val();
+					price = price.replace(/[^0-9\.]+/g,"");
+					$(this).val('$'+price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+					ROIcalculation();
+				});
+				
+				
+				
+				$("#roi-print").on('click' , function(){
+					var a 	= $("#roi-a").val();
+					var b 	= $("#roi-b").val();
+					var c	= $("#roi-cr").html();
+					var d	= $("#roi-fr").html();
+					var e	= $("#roi-saving").html();
+					
+					var PrintHtml = '<!doctype html><html><head><title>Print Out Result</title></head><body style="font-family: arial;"><h1 style="text-align: center;">Flipcause ROI Calculator</h1><table border="1" align="center" cellpadding="10px" cellspacing="0px" style="border-collapse: collapse;"><tr><td>Average Auunal Donations: <strong>'+a+'</strong></td><td>Current Processing Rates: <strong>'+b+'</strong></td></tr><tr><td>What you&#39;ll pay with your current payment processing rate:</td><td style="font-size: 20px;"><strong>'+c+'</strong></td></tr><tr><td>What you&#39;ll pay with your current payment processing rate:</td><td style="font-size: 20px;"><strong>'+d+'</strong></td></tr><tr><td colspan="2"><h2>Overall Savings: '+e+'</h2></td></tr></table><div style="text-align: center"><a href="https://www.flipcause.com/solutions">www.flipcause.com</a></div></body></html>';
+					var win = window.open('', '_blank');
+					win.document.write(PrintHtml);
+					win.focus();
+				});
+				
+			});
+		</script>
+	</body>
+</html>

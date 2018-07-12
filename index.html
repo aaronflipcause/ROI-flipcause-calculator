@@ -8,14 +8,14 @@
 		<div class="roi-calculator-wrapper">
 			<div class="roi-calculator">
 				<div class="roi-calculator-main">
-					<h1>Flipcause Transaction Rate Savings Calculator</h1>
+					<h1>Flipcause ROI Calculator</h1>
 				</div>
 				<div class="roi-form-group">
-					<span class="roi-form-label">Average Annual Donation Amount</span>
+					<span class="roi-form-label">Average Annual Donations</span>
 					<input type="text" id="roi-a" class="roi-form-input">	
 				</div>
 				<div class="roi-form-group">
-					<span class="roi-form-label">Current Processing Rates</span>
+					<span class="roi-form-label">Current Processing Rate</span>
 					<input type="text" id="roi-b" class="roi-form-input">	
 				</div>
 				<div class="roi-seprator"></div>
@@ -64,10 +64,17 @@
 //					ROIcalculation();
 //				});
 				
-				$("#roi-a , #roi-b").keyup(function(){
+				$("#roi-a").keyup(function(){
 					var price = $(this).val();
 					price = price.replace(/[^0-9\.]+/g,"");
 					$(this).val('$'+price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+					ROIcalculation();
+				});
+				
+				$("#roi-b").on("input" , function(){
+					var price = $(this).val();
+					price = price.replace(/[^0-9\.]+/g,"");
+					$(this).val(price+"%");
 					ROIcalculation();
 				});
 				
@@ -80,7 +87,7 @@
 					var d	= $("#roi-fr").html();
 					var e	= $("#roi-saving").html();
 					
-					var PrintHtml = '<!doctype html><html><head><title>Print Out Result</title></head><body style="font-family: arial;"><h1 style="text-align: center;">Flipcause ROI Calculator</h1><table border="1" align="center" cellpadding="10px" cellspacing="0px" style="border-collapse: collapse;"><tr><td>Average Annual Donations: <strong>'+a+'</strong></td><td>Current Processing Rates: <strong>'+b+'</strong></td></tr><tr><td>What you&#39;ll pay with your current payment processing rate:</td><td style="font-size: 20px;"><strong>'+c+'</strong></td></tr><tr><td>What you&#39;ll pay with the Flipcause 1.5% Effective Rate:</td><td style="font-size: 20px;"><strong>'+d+'</strong></td></tr><tr><td colspan="2"><h2>Overall Savings: '+e+'</h2></td></tr></table><div style="text-align: center"><a href="https://www.flipcause.com/solutions">www.flipcause.com</a></div></body></html>';
+					var PrintHtml = '<!doctype html><html><head><title>Print Out Result</title></head><body style="font-family: arial;"><h1 style="text-align: center;">Flipcause ROI Calculator</h1><table border="1" align="center" cellpadding="10px" cellspacing="0px" style="border-collapse: collapse;"><tr><td>Average Auunal Donations: <strong>'+a+'</strong></td><td>Current Processing Rates: <strong>'+b+'</strong></td></tr><tr><td>What you&#39;ll pay with your current payment processing rate:</td><td style="font-size: 20px;"><strong>'+c+'</strong></td></tr><tr><td>What you&#39;ll pay with your current payment processing rate:</td><td style="font-size: 20px;"><strong>'+d+'</strong></td></tr><tr><td colspan="2"><h2>Overall Savings: '+e+'</h2></td></tr></table><div style="text-align: center"><a href="https://www.flipcause.com/solutions">www.flipcause.com</a></div></body></html>';
 					var win = window.open('', '_blank');
 					win.document.write(PrintHtml);
 					win.focus();
